@@ -3,12 +3,16 @@ on:
   issues:
     types:
       - opened
+# permissions: # You can set permissions here
 jobs:
   assign-label:
+    # permissions: read-all|write-all
+    permissions:
+      issues: write
     runs-on: ubuntu-latest
     steps:
       - name: Assign label
-        if: contains(github.event.issue.title, 'bug')
+        if: contains(github.event.issue.title, 'bug') # this is also secure to do without executing potential injected code
         run: |
           curl -X POST \
           --url https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels \
